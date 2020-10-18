@@ -1,0 +1,189 @@
+{
+	"info": {
+		"_postman_id": "1471e36a-37e6-43a5-918a-dee88c7c3b34",
+		"name": "WorkSpace",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8ecfa325-216e-4f8d-adbd-f92095bcc749",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"postman.setEnvironmentVariable(\"token\", jsonData.token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://api.octoperf.com/public/users/login?password=Arina2013&username=dashievas@inbox.ru",
+					"protocol": "https",
+					"host": [
+						"api",
+						"octoperf",
+						"com"
+					],
+					"path": [
+						"public",
+						"users",
+						"login"
+					],
+					"query": [
+						{
+							"key": "password",
+							"value": "Arina2013"
+						},
+						{
+							"key": "username",
+							"value": "dashievas@inbox.ru"
+						}
+					]
+				},
+				"description": "https://api.octoperf.com/public/users/login"
+			},
+			"response": []
+		},
+		{
+			"name": "WorkSpaceMember",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e32279c9-fe18-4670-a8cc-10f08cdb997e",
+						"exec": [
+							"pm.test(\"Verify status code\", function(){",
+							"pm.response.to.have.status(200)",
+							"}",
+							")",
+							"// Verify response code using expect function",
+							"",
+							"pm.test(\"Verify code\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"}",
+							")",
+							"// verify key",
+							"pm.test(\"Verify Key components\", () =>{",
+							"    var data = JSON.parse(responseBody);",
+							"    data.forEach(function(results){",
+							"        pm.expect(results).to.have.all.keys('created','description','id','lastModified','name','userId')",
+							"    })",
+							"})",
+							"pm.test(\"Verify name response\", ()=>{",
+							"    var data = pm.response.json();",
+							"    pm.expect(data[1].name).to.equal('newWorkSpaceCreate');",
+							"})",
+							"pm.test(\"Verify name, id, userId response\", ()=>{",
+							"    var data = pm.response.json();",
+							"    pm.expect(data[0].id).to.equal('WaN1gnQBQkEbb_A7eL4T');",
+							"    pm.expect(data[0].userId).to.equal('Iwx1gnQBJAj-hbsad-uj');",
+							"    pm.expect(data[0].name).to.equal('Saiana WorkSpace');",
+							"})",
+							"// verify content-type Headers",
+							"pm.test(\"Verify Content-type is present\",()=>{",
+							"    pm.response.to.have.header(\"Content-Type\")",
+							"})",
+							"pm.test(\"Verify Content-type is application Json\",()=>{",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+							"})",
+							"// Assert Environment",
+							"pm.test(\"Verify Environment\",()=>{",
+							"    pm.expect(pm.environment.name).to.equal(\"QA\");",
+							"})",
+							"// Validate Response Structure",
+							"const schema = {",
+							"    \"type\": \"array\",",
+							"  \"items\": [",
+							"    {",
+							"    \"type\": \"object\",",
+							"      \"properties\": {",
+							"        \"created\": {",
+							"          \"type\": \"integer\"",
+							"        },",
+							"        \"description\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"id\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"lastModified\": {",
+							"          \"type\": \"integer\"",
+							"        },",
+							"        \"name\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"userId\": {",
+							"          \"type\": \"string\"",
+							"        }",
+							"      },",
+							"      \"required\": [",
+							"        \"created\",",
+							"        \"description\",",
+							"        \"id\",",
+							"        \"lastModified\",",
+							"        \"name\",",
+							"        \"userId\"",
+							"      ]",
+							"    }",
+							"  ]",
+							"    };",
+							"    pm.test(\"Verify Schema is valid\", function(){",
+							"        pm.response.to.have.jsonSchema(schema);",
+							"    }",
+							"    )",
+							"    ",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.octoperf.com/workspaces/member-of",
+					"protocol": "https",
+					"host": [
+						"api",
+						"octoperf",
+						"com"
+					],
+					"path": [
+						"workspaces",
+						"member-of"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "workspaceMembersByWorkSpace",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
